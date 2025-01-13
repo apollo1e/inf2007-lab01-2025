@@ -48,14 +48,19 @@ fun MainScreen() {
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                // Make use of UserInput with the proper variable and test tag
                 UserInput(
-                    name = name,
-                    onNameChange = { name = it }
+                    name = username,
+                    onNameChange = { username = it },
+                    modifier = Modifier.testTag("nameInput")
                 )
 
+                // use the Button logic to show greeting when input is not blank
                 Button(
                     onClick = {
                         if (username.isNotBlank()) {
+                            showGreeting = true
+                        } else {
                             showGreeting = false
                         }
                     },
@@ -66,14 +71,15 @@ fun MainScreen() {
                     Text("Submit")
                 }
 
+                // Display greeting message only if showGreeting is true
                 if (showGreeting) {
-                    Greeeting(
+                    Greeting(
                         name = username,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp)
+                            .testTag("greetingMsg") // Corrected test tag
                     )
-
                 }
             }
         }
@@ -88,17 +94,14 @@ fun UserInput(name: String, onNameChange: (String) -> Unit, modifier: Modifier =
         label = { Text("Enter your Name") },
         modifier = modifier
             .fillMaxWidth()
-            .testTag("UserInput")
     )
 }
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $username!, Welcome to InF2007!",
-        modifier = Modifier
-            .fillMaxWidth()
-            .testTag("greeting")
+        text = "Hello $name!, Welcome to INF2007!",
+        modifier = modifier
     )
 }
 
